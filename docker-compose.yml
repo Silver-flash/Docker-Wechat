@@ -1,0 +1,29 @@
+services:
+  wechat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        WECHAT_URL: https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_arm64.deb
+    image: docker-wechat:latest
+    container_name: wechat
+
+    ports:
+      - "6080:6080"   # Xpra HTML5
+      - "7070:7070"   # Chinese input API
+
+    volumes:
+      # Persist the entire wechat home directory into the project so chat
+      # history, login token, configs, cache, xwechat_files, etc. all survive
+      # rebuilds and `docker compose down -v`.
+      - ./data/home:/home/wechat
+
+    shm_size: "256mb"
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s

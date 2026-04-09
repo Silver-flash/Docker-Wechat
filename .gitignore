@@ -1,0 +1,19 @@
+# WeChat 用户数据（登录态、聊天记录、文件）
+data/
+
+# macOS / iCloud
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.iCloud
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志
+*.log

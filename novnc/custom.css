@@ -1,0 +1,58 @@
+/* ── Override Xpra defaults ─────────────────────────────────────────── */
+
+html, body {
+  background-color: #1c1c1c !important;
+  background-image: none !important;
+}
+
+/* Hide the Xpra float menu completely */
+#float_menu {
+  display: none !important;
+}
+
+/* ── IME toggle button ──────────────────────────────────────────────── */
+#ime-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #444;
+  color: #bbb;
+  font-size: 13px;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  user-select: none;
+}
+#ime-btn:hover { transform: scale(1.08); }
+/* Green = Chinese Pinyin active */
+#ime-btn.cn { background: #07c160; color: #fff; }
+
+/* ── Toast notification ─────────────────────────────────────────────── */
+#wx-toast {
+  position: fixed;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #ddd;
+  font-size: 13px;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  padding: 7px 18px;
+  border-radius: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 100000;
+  white-space: nowrap;
+}
+#wx-toast.error { background: #5a1a1a; color: #f99; }
