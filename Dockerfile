@@ -26,12 +26,15 @@ RUN apt-get update && apt-get install -y \
     dconf-cli dconf-service \
     && rm -rf /var/lib/apt/lists/*
 
-# Download and install WeChat
-ARG WECHAT_URL=https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb
-RUN wget -O /tmp/wechat.deb "${WECHAT_URL}" \
-    && dpkg -i /tmp/wechat.deb \
-    || (apt-get install -f -y && dpkg -i /tmp/wechat.deb) \
-    && rm /tmp/wechat.deb
+# Download and install WeChat. Picks the right .deb for the current build
+# platform (works with `docker buildx --platform linux/amd64,linux/arm64`).
+ARG TARGETARCH
+ARG WECHAT_URL_AMD64=https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.deb
+ARG WECHAT_URL_ARM64=https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_arm64.deb
+RUN if [ "${TARGETARCH}" = "arm64" ]; then URL="${WECHAT_URL_ARM64}"; else URL="${WECHAT_URL_AMD64}"; fi \
+    && wget -O /tmp/wechat.deb "${URL}" \
+    && (dpkg -i /tmp/wechat.deb || (apt-get update && apt-get install -f -y && dpkg -i /tmp/wechat.deb)) \
+    && rm /tmp/wechat.deb && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
 RUN useradd -m -s /bin/bash wechat && \
